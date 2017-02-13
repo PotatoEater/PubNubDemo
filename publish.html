@@ -1,0 +1,45 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Google Maps Example</title>
+  <script src="https://cdn.pubnub.com/sdk/javascript/pubnub.4.4.1.min.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" />
+</head>
+
+<body>
+  <div class="container">
+    <h1>PubNub Google Maps Example</h1>
+    <div id="map-canvas" style="width:600px;height:400px"></div>
+  </div>
+
+  <script>
+    window.lat = 37.8199;
+    window.lng = -122.4783;
+
+    var lineCoords = [];
+
+
+
+    var pnChannel = "map-channel";
+    var pubnub = new PubNub({
+      publishKey: 'pub-c-5eac434d-86c1-4bba-b451-9119143d3348',
+      subscribeKey: 'sub-c-47c4c094-eda5-11e6-81cc-0619f8945a4f'
+    });
+    setInterval(function() {
+      var lat = window.lat += 0.001;
+      var lng = window.lng += 0.01;
+      pubnub.publish({
+        channel: pnChannel,
+        message: {
+          lat: lat,
+          lng: lng
+        }
+      });
+      console.log('publish', [lat, lng]);
+    }, 5000);
+  </script>
+</body>
+
+</html>
